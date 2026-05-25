@@ -453,11 +453,11 @@
 
   /* Menu hover effect - TheJacketMaker style */
   {% if section.settings.menu_hover_style == 'underline' %}
-    #shopify-section-{{ section.id }} .header-menu .menu-list__link {
+    #shopify-section-{{ section.id }} .header-menu .menu-list__list-item {
       position: relative;
     }
 
-    #shopify-section-{{ section.id }} .header-menu .menu-list__link::after {
+    #shopify-section-{{ section.id }} .header-menu .menu-list__list-item::after {
       content: '';
       position: absolute;
       bottom: 0;
@@ -476,12 +476,12 @@
       transition: transform {{ section.settings.menu_hover_speed }}ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    #shopify-section-{{ section.id }} .header-menu .menu-list__link:hover::after {
+    #shopify-section-{{ section.id }} .header-menu .menu-list__list-item:hover::after {
       transform: scaleX(1);
     }
 
     {% if section.settings.menu_hover_show_on_active %}
-      #shopify-section-{{ section.id }} .header-menu .menu-list__link[aria-current="page"]::after {
+      #shopify-section-{{ section.id }} .header-menu .menu-list__list-item:has(.menu-list__link[aria-current="page"])::after {
         transform: scaleX(1);
       }
     {% endif %}
