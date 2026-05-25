@@ -396,6 +396,12 @@
     --menu-font-size: {{ section.settings.menu_font_size }}px;
     --menu-letter-spacing: {{ section.settings.menu_letter_spacing }}px;
     --menu-text-transform: {{ section.settings.menu_text_transform }};
+    --menu-item-padding-x: {{ section.settings.menu_item_padding_x }}px;
+    --menu-item-padding-y: {{ section.settings.menu_item_padding_y }}px;
+    --menu-item-gap: {{ section.settings.menu_item_gap }}px;
+    --menu-hover-line-thickness: {{ section.settings.menu_hover_line_thickness }}px;
+    --menu-hover-line-offset: {{ section.settings.menu_hover_line_offset }}px;
+    --menu-hover-color: {{ section.settings.menu_hover_color }};
   }
 
   {% if section.settings.custom_padding_top > 0 or section.settings.custom_padding_bottom > 0 %}
@@ -436,6 +442,93 @@
     letter-spacing: var(--menu-letter-spacing);
     text-transform: var(--menu-text-transform);
   }
+
+  /* Menu item spacing */
+  #shopify-section-{{ section.id }} .header-menu .menu-list__link {
+    padding: var(--menu-item-padding-y) var(--menu-item-padding-x);
+  }
+
+  #shopify-section-{{ section.id }} .header-menu .overflow-menu::part(list) {
+    gap: var(--menu-item-gap);
+  }
+
+  /* Menu hover effect - underline */
+  {% if section.settings.menu_hover_style == 'underline' %}
+    #shopify-section-{{ section.id }} .header-menu .menu-list__link {
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .header-menu .menu-list__link::after {
+      content: '';
+      position: absolute;
+      left: var(--menu-item-padding-x);
+      right: var(--menu-item-padding-x);
+      bottom: calc(var(--menu-item-padding-y) - var(--menu-hover-line-offset));
+      height: var(--menu-hover-line-thickness);
+      background-color: var(--menu-hover-color);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #shopify-section-{{ section.id }} .header-menu .menu-list__link:hover::after {
+      transform: scaleX(1);
+    }
+
+    {% if section.settings.menu_hover_show_on_active %}
+      #shopify-section-{{ section.id }} .header-menu .menu-list__link[aria-current="page"]::after {
+        transform: scaleX(1);
+      }
+    {% endif %}
+  {% endif %}
+
+  /* Menu hover effect - overline */
+  {% if section.settings.menu_hover_style == 'overline' %}
+    #shopify-section-{{ section.id }} .header-menu .menu-list__link {
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .header-menu .menu-list__link::before {
+      content: '';
+      position: absolute;
+      left: var(--menu-item-padding-x);
+      right: var(--menu-item-padding-x);
+      top: calc(var(--menu-item-padding-y) - var(--menu-hover-line-offset));
+      height: var(--menu-hover-line-thickness);
+      background-color: var(--menu-hover-color);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #shopify-section-{{ section.id }} .header-menu .menu-list__link:hover::before {
+      transform: scaleX(1);
+    }
+
+    {% if section.settings.menu_hover_show_on_active %}
+      #shopify-section-{{ section.id }} .header-menu .menu-list__link[aria-current="page"]::before {
+        transform: scaleX(1);
+      }
+    {% endif %}
+  {% endif %}
+
+  /* Menu hover effect - highlight */
+  {% if section.settings.menu_hover_style == 'highlight' %}
+    #shopify-section-{{ section.id }} .header-menu .menu-list__link {
+      border-radius: 4px;
+      transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #shopify-section-{{ section.id }} .header-menu .menu-list__link:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    {% if section.settings.menu_hover_show_on_active %}
+      #shopify-section-{{ section.id }} .header-menu .menu-list__link[aria-current="page"] {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    {% endif %}
+  {% endif %}
 </style>
 
 <script
@@ -1256,6 +1349,27 @@
     },
     {
       "type": "select",
+      "id": "search_style",
+      "label": "Search style",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "icon",
+          "label": "Icon"
+        },
+        {
+          "value": "bar",
+          "label": "Search bar"
+        }
+      ],
+      "default": "icon",
+      "visible_if": "{{ section.settings.show_search }}"
+    },
+    {
+      "type": "select",
       "id": "search_position",
       "label": "t:settings.search_position",
       "options": [
@@ -1605,6 +1719,100 @@
         { "value": "capitalize", "label": "Capitalize" }
       ],
       "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Menu spacing"
+    },
+    {
+      "type": "range",
+      "id": "menu_item_padding_x",
+      "label": "Menu item horizontal padding",
+      "min": 4,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "menu_item_padding_y",
+      "label": "Menu item vertical padding",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "menu_item_gap",
+      "label": "Space between menu items",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Menu hover effect"
+    },
+    {
+      "type": "select",
+      "id": "menu_hover_style",
+      "label": "Hover style",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "underline",
+          "label": "Underline"
+        },
+        {
+          "value": "overline",
+          "label": "Overline"
+        },
+        {
+          "value": "highlight",
+          "label": "Background highlight"
+        }
+      ],
+      "default": "underline"
+    },
+    {
+      "type": "range",
+      "id": "menu_hover_line_thickness",
+      "label": "Line thickness",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "menu_hover_line_offset",
+      "label": "Line offset from text",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "menu_hover_color",
+      "label": "Hover line color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "menu_hover_show_on_active",
+      "label": "Show line on active page",
+      "default": true
     },
     {
       "type": "header",
