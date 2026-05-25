@@ -581,8 +581,9 @@
     {% endif %}
   }
 
-  /* THE ACTUAL GRID CONTAINER - .menu-list__submenu-inner */
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner {
+  /* THE ACTUAL GRID CONTAINER - using ID + class for maximum specificity */
+  #shopify-section-{{ section.id }} #header-component .menu-list__submenu-inner,
+  [id^="submenu-"] {
     display: grid !important;
     grid-template-columns: repeat(5, 1fr) !important;
     gap: 30px !important;
@@ -592,8 +593,9 @@
     width: 100% !important;
   }
 
-  /* ALSO target every possible child wrapper in case submenu-inner has a single child */
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner > *:only-child {
+  /* If submenu-inner has a single child wrapper, pass grid through */
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner > *:only-child,
+  [id^="submenu-"] > *:only-child {
     display: grid !important;
     grid-template-columns: repeat(5, 1fr) !important;
     gap: 30px !important;
@@ -605,13 +607,17 @@
 
   /* Each direct child of the grid = one column */
   #shopify-section-{{ section.id }} .menu-list__submenu-inner > *,
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner > * > * {
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner > * > *,
+  [id^="submenu-"] > *,
+  [id^="submenu-"] > * > * {
     min-width: 0 !important;
   }
 
   /* Nested lists inside columns - vertical flow */
   #shopify-section-{{ section.id }} .menu-list__submenu-inner ul ul,
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner li ul {
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner li ul,
+  [id^="submenu-"] ul ul,
+  [id^="submenu-"] li ul {
     display: flex !important;
     flex-direction: column !important;
     gap: 10px !important;
@@ -623,7 +629,8 @@
   }
 
   /* Override any inline column-count */
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner ul[style*="column-count"] {
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner ul[style*="column-count"],
+  [id^="submenu-"] ul[style*="column-count"] {
     column-count: unset !important;
     columns: unset !important;
   }
@@ -687,6 +694,11 @@
                   visibility var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1),
                   transform var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
+  {% endif %}
+
+  /* Custom CSS from settings - user can paste DevTools-tested CSS here */
+  {% if section.settings.mega_custom_css != blank %}
+    {{ section.settings.mega_custom_css }}
   {% endif %}
 
   /* Mobile: revert all mega menu overrides */
@@ -2244,6 +2256,16 @@
       "id": "mega_link_hover_color",
       "label": "Link hover color",
       "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Custom CSS override"
+    },
+    {
+      "type": "textarea",
+      "id": "mega_custom_css",
+      "label": "Custom mega menu CSS",
+      "info": "Paste working CSS from DevTools here. It will be injected directly."
     },
     {
       "type": "header",
