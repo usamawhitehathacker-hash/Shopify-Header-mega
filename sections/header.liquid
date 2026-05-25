@@ -581,8 +581,12 @@
     {% endif %}
   }
 
-  /* The .mega-menu__list is the actual grid container */
+  /* Override Horizon's own grid variable to force 5 columns */
+  #shopify-section-{{ section.id }} [data-menu-list-id],
+  #shopify-section-{{ section.id }} [data-menu-grid-id],
   #shopify-section-{{ section.id }} .mega-menu__list {
+    --menu-columns-desktop: 5 !important;
+    --menu-columns-tablet: 4 !important;
     display: grid !important;
     grid-template-columns: repeat(5, 1fr) !important;
     gap: var(--mega-column-gap, 30px) !important;
