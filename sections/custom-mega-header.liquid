@@ -1,4 +1,4 @@
-<div class="cmh-header" role="banner" aria-label="Site header">
+<div class="cmh-header" role="banner" aria-label="Site header" data-cmh-sticky="{{ section.settings.cmh_sticky_type }}" data-cmh-sticky-state="idle">
   <div class="cmh-header__container">
     <div class="cmh-header__row">
       {%- comment -%} Logo {%- endcomment -%}
@@ -121,6 +121,7 @@
     width: var(--cmh-logo-width-desktop);
     height: auto;
     display: block;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   #shopify-section-{{ section.id }} .cmh-header__logo-text {
@@ -159,7 +160,104 @@
       padding-right: 20px;
     }
   }
+
+  /* Sticky header styles */
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="always"],
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="on_scroll_up"],
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="reduce_logo"] {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="on_scroll_up"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="on_scroll_up"][data-cmh-sticky-state="active"] {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="reduce_logo"][data-cmh-sticky-state="scrolled"] .cmh-header__logo-img {
+    width: calc(var(--cmh-logo-width-desktop) * 0.7);
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="always"][data-cmh-sticky-state="scrolled"],
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="reduce_logo"][data-cmh-sticky-state="scrolled"] {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
 </style>
+
+<script>
+(function() {
+  'use strict';
+
+  var STICKY_TYPE = '{{ section.settings.cmh_sticky_type }}';
+  var SECTION_ID = '{{ section.id }}';
+
+  if (STICKY_TYPE === 'none') return;
+
+  var header = document.querySelector('#shopify-section-' + SECTION_ID + ' .cmh-header');
+  if (!header) return;
+
+  var lastScrollY = 0;
+  var ticking = false;
+  var headerHeight = header.offsetHeight;
+
+  function onScroll() {
+    var currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (STICKY_TYPE === 'on_scroll_up') {
+      if (currentScrollY > headerHeight) {
+        if (currentScrollY < lastScrollY) {
+          header.setAttribute('data-cmh-sticky-state', 'active');
+        } else {
+          header.setAttribute('data-cmh-sticky-state', 'idle');
+        }
+      } else {
+        header.setAttribute('data-cmh-sticky-state', 'idle');
+      }
+    }
+
+    if (STICKY_TYPE === 'always' || STICKY_TYPE === 'reduce_logo') {
+      if (currentScrollY > headerHeight) {
+        header.setAttribute('data-cmh-sticky-state', 'scrolled');
+      } else {
+        header.setAttribute('data-cmh-sticky-state', 'idle');
+      }
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  }
+
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', requestTick, { passive: true });
+
+  /* Shopify editor events */
+  document.addEventListener('shopify:section:load', function(event) {
+    if (event.detail.sectionId === SECTION_ID) {
+      header = document.querySelector('#shopify-section-' + SECTION_ID + ' .cmh-header');
+      if (header) {
+        headerHeight = header.offsetHeight;
+      }
+    }
+  });
+})();
+</script>
 
 {% schema %}
 {
@@ -274,6 +372,22 @@
       "type": "url",
       "id": "cmh_logo_link",
       "label": "Logo link"
+    },
+    {
+      "type": "header",
+      "content": "Sticky header"
+    },
+    {
+      "type": "select",
+      "id": "cmh_sticky_type",
+      "label": "Sticky behavior",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "on_scroll_up", "label": "On scroll up" },
+        { "value": "always", "label": "Always" },
+        { "value": "reduce_logo", "label": "Always - reduce logo" }
+      ],
+      "default": "on_scroll_up"
     }
   ],
   "blocks": [],
