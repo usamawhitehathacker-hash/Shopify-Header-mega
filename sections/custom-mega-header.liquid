@@ -106,6 +106,10 @@
     --cmh-menu-text-color: {{ section.settings.cmh_menu_text_color }};
     --cmh-menu-hover-color: {{ section.settings.cmh_menu_hover_color }};
     --cmh-menu-active-color: {{ section.settings.cmh_menu_active_color }};
+    --cmh-menu-font-size: {{ section.settings.cmh_menu_font_size }}px;
+    --cmh-menu-font-weight: {{ section.settings.cmh_menu_font_weight }};
+    --cmh-menu-letter-spacing: {{ section.settings.cmh_menu_letter_spacing }}px;
+    --cmh-menu-text-transform: {{ section.settings.cmh_menu_text_transform }};
   }
 
   #shopify-section-{{ section.id }} .cmh-header {
@@ -213,8 +217,10 @@
     padding: 8px 12px;
     text-decoration: none;
     color: var(--cmh-menu-text-color);
-    font-size: 0.9375rem;
-    font-weight: 500;
+    font-size: var(--cmh-menu-font-size);
+    font-weight: var(--cmh-menu-font-weight);
+    letter-spacing: var(--cmh-menu-letter-spacing);
+    text-transform: var(--cmh-menu-text-transform);
     line-height: 1.4;
     white-space: nowrap;
     transition: opacity 0.2s ease;
@@ -227,9 +233,19 @@
   }
 
   #shopify-section-{{ section.id }} .cmh-header__menu-link[aria-current="page"] {
-    font-weight: 600;
     color: var(--cmh-menu-active-color);
   }
+
+  {% case section.settings.cmh_menu_font_family %}
+    {% when 'heading' %}
+      #shopify-section-{{ section.id }} .cmh-header__menu-link {
+        font-family: var(--font-heading-family, inherit);
+      }
+    {% when 'body' %}
+      #shopify-section-{{ section.id }} .cmh-header__menu-link {
+        font-family: var(--font-body-family, inherit);
+      }
+  {% endcase %}
 
   #shopify-section-{{ section.id }} .cmh-header__menu-caret {
     width: 10px;
@@ -272,9 +288,20 @@
 
   #shopify-section-{{ section.id }} .cmh-header__logo-text {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: {{ section.settings.cmh_logo_font_weight }};
     letter-spacing: -0.02em;
   }
+
+  {% case section.settings.cmh_logo_font_family %}
+    {% when 'heading' %}
+      #shopify-section-{{ section.id }} .cmh-header__logo-text {
+        font-family: var(--font-heading-family, inherit);
+      }
+    {% when 'body' %}
+      #shopify-section-{{ section.id }} .cmh-header__logo-text {
+        font-family: var(--font-body-family, inherit);
+      }
+  {% endcase %}
 
   /* Mobile layout styles */
   #shopify-section-{{ section.id }} .cmh-header__hamburger {
@@ -779,6 +806,89 @@
       "id": "cmh_menu_active_color",
       "label": "Menu active link color",
       "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "cmh_menu_font_family",
+      "label": "Menu font",
+      "options": [
+        { "value": "inherit", "label": "Theme default" },
+        { "value": "heading", "label": "Heading font" },
+        { "value": "body", "label": "Body font" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "select",
+      "id": "cmh_menu_font_weight",
+      "label": "Menu font weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "cmh_menu_font_size",
+      "label": "Menu font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "cmh_menu_letter_spacing",
+      "label": "Menu letter spacing",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "cmh_menu_text_transform",
+      "label": "Menu text transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "cmh_logo_font_family",
+      "label": "Logo text font",
+      "options": [
+        { "value": "inherit", "label": "Theme default" },
+        { "value": "heading", "label": "Heading font" },
+        { "value": "body", "label": "Body font" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "cmh_logo_font_weight",
+      "label": "Logo text font weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "700"
     }
   ],
   "blocks": [],
