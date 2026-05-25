@@ -1,0 +1,156 @@
+<div class="cmh-header" role="banner" aria-label="Site header">
+  <div class="cmh-header__container">
+    <div class="cmh-header__row">
+      <!-- Logo, Menu, Actions will be added in next steps -->
+    </div>
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --cmh-padding-top: {{ section.settings.cmh_padding_top }}px;
+    --cmh-padding-bottom: {{ section.settings.cmh_padding_bottom }}px;
+    --cmh-separator-color: {{ section.settings.cmh_separator_color }};
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header {
+    background-color: #ffffff;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    {% if section.settings.cmh_enable_shadow %}
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    {% endif %}
+    {% if section.settings.cmh_show_separator %}
+      border-bottom: 1px solid var(--cmh-separator-color);
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__container {
+    {% case section.settings.cmh_section_width %}
+      {% when 'full_width' %}
+        max-width: 100%;
+      {% when 'page_width' %}
+        max-width: 1200px;
+      {% when 'narrow' %}
+        max-width: 900px;
+    {% endcase %}
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: var(--cmh-padding-top);
+    padding-bottom: var(--cmh-padding-bottom);
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__row {
+    display: flex;
+    align-items: center;
+    {% case section.settings.cmh_section_height %}
+      {% when 'compact' %}
+        min-height: 60px;
+      {% when 'standard' %}
+        min-height: 80px;
+    {% endcase %}
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .cmh-header__container {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    #shopify-section-{{ section.id }} .cmh-header__row {
+      {% case section.settings.cmh_section_height %}
+        {% when 'compact' %}
+          min-height: 50px;
+        {% when 'standard' %}
+          min-height: 60px;
+      {% endcase %}
+    }
+  }
+
+  @media screen and (max-width: 989px) and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .cmh-header__container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Mega Header",
+  "tag": "header",
+  "class": "cmh-header-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General layout"
+    },
+    {
+      "type": "select",
+      "id": "cmh_section_width",
+      "label": "Section width",
+      "options": [
+        { "value": "full_width", "label": "Full width" },
+        { "value": "page_width", "label": "Page width" },
+        { "value": "narrow", "label": "Narrow" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "select",
+      "id": "cmh_section_height",
+      "label": "Section height",
+      "options": [
+        { "value": "compact", "label": "Compact" },
+        { "value": "standard", "label": "Standard" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "range",
+      "id": "cmh_padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cmh_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "cmh_enable_shadow",
+      "label": "Enable shadow",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "cmh_show_separator",
+      "label": "Show separator line",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "cmh_separator_color",
+      "label": "Separator color",
+      "default": "#E5E5E5"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Custom Mega Header"
+    }
+  ]
+}
+{% endschema %}
