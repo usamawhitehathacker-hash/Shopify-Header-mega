@@ -592,13 +592,26 @@
     width: 100% !important;
   }
 
-  /* Each direct child of submenu-inner = one column */
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner > * {
+  /* ALSO target every possible child wrapper in case submenu-inner has a single child */
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner > *:only-child {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 30px !important;
+    width: 100% !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Each direct child of the grid = one column */
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner > *,
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner > * > * {
     min-width: 0 !important;
   }
 
   /* Nested lists inside columns - vertical flow */
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner ul {
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner ul ul,
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner li ul {
     display: flex !important;
     flex-direction: column !important;
     gap: 10px !important;
@@ -630,7 +643,8 @@
 
   /* Parent links = column headings */
   #shopify-section-{{ section.id }} .menu-list__submenu-inner .mega-menu__link--parent,
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner > * > * > a:first-child {
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner > * > * > a:first-child,
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner > * > * > div > a:first-child {
     font-size: 14px !important;
     font-weight: 600 !important;
     color: #000000 !important;
@@ -643,6 +657,7 @@
   }
 
   /* Child links */
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner li li a,
   #shopify-section-{{ section.id }} .menu-list__submenu-inner a:not(.mega-menu__link--parent) {
     font-size: 14px !important;
     font-weight: 400 !important;
@@ -655,6 +670,7 @@
     transition: color 0.2s ease !important;
   }
 
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner li li a:hover,
   #shopify-section-{{ section.id }} .menu-list__submenu-inner a:not(.mega-menu__link--parent):hover {
     color: #000000 !important;
   }
