@@ -401,6 +401,22 @@
     --menu-item-gap: {{ section.settings.menu_item_gap }}px;
     --menu-hover-line-thickness: {{ section.settings.menu_hover_line_thickness }}px;
     --menu-hover-color: {{ section.settings.menu_hover_color }};
+    --mega-bg-color: {{ section.settings.mega_bg_color }};
+    --mega-border-color: {{ section.settings.mega_border_color }};
+    --mega-padding-top: {{ section.settings.mega_padding_top }}px;
+    --mega-padding-bottom: {{ section.settings.mega_padding_bottom }}px;
+    --mega-columns: {{ section.settings.mega_columns }};
+    --mega-column-gap: {{ section.settings.mega_column_gap }}px;
+    --mega-row-gap: {{ section.settings.mega_row_gap }}px;
+    --mega-heading-size: {{ section.settings.mega_heading_size }}px;
+    --mega-heading-weight: {{ section.settings.mega_heading_weight }};
+    --mega-heading-color: {{ section.settings.mega_heading_color }};
+    --mega-heading-margin: {{ section.settings.mega_heading_margin }}px;
+    --mega-link-size: {{ section.settings.mega_link_size }}px;
+    --mega-link-weight: {{ section.settings.mega_link_weight }};
+    --mega-link-color: {{ section.settings.mega_link_color }};
+    --mega-link-hover-color: {{ section.settings.mega_link_hover_color }};
+    --mega-animation-speed: {{ section.settings.mega_animation_speed }}ms;
   }
 
   {% if section.settings.custom_padding_top > 0 or section.settings.custom_padding_bottom > 0 %}
@@ -1844,6 +1860,223 @@
       "id": "menu_hover_show_on_active",
       "label": "Show line on active page",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mega menu dropdown"
+    },
+    {
+      "type": "select",
+      "id": "mega_trigger",
+      "label": "Trigger (desktop)",
+      "options": [
+        { "value": "hover", "label": "Hover" },
+        { "value": "click", "label": "Click" }
+      ],
+      "default": "hover"
+    },
+    {
+      "type": "select",
+      "id": "mega_width",
+      "label": "Dropdown width",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "container", "label": "Container width" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "mega_columns",
+      "label": "Columns per row",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "mega_animation",
+      "label": "Animation",
+      "options": [
+        { "value": "fade", "label": "Fade" },
+        { "value": "slide", "label": "Slide down" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "range",
+      "id": "mega_animation_speed",
+      "label": "Animation speed",
+      "min": 100,
+      "max": 500,
+      "step": 50,
+      "unit": "ms",
+      "default": 250
+    },
+    {
+      "type": "color",
+      "id": "mega_bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "mega_show_border",
+      "label": "Show top border",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "mega_border_color",
+      "label": "Border color",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "checkbox",
+      "id": "mega_show_shadow",
+      "label": "Show shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "mega_padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mega_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mega_column_gap",
+      "label": "Column gap",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "mega_row_gap",
+      "label": "Link gap (vertical)",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Mega menu typography"
+    },
+    {
+      "type": "select",
+      "id": "mega_heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "inherit", "label": "Theme default" },
+        { "value": "heading", "label": "Heading font" },
+        { "value": "body", "label": "Body font" },
+        { "value": "accent", "label": "Accent font" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "range",
+      "id": "mega_heading_size",
+      "label": "Heading font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "mega_heading_weight",
+      "label": "Heading font weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "mega_heading_transform",
+      "label": "Heading text transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "color",
+      "id": "mega_heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "mega_heading_margin",
+      "label": "Heading bottom spacing",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mega_link_size",
+      "label": "Link font size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "mega_link_weight",
+      "label": "Link font weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "color",
+      "id": "mega_link_color",
+      "label": "Link color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "mega_link_hover_color",
+      "label": "Link hover color",
+      "default": "#000000"
     },
     {
       "type": "header",
