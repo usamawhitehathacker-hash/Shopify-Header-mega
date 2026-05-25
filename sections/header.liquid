@@ -400,7 +400,6 @@
     --menu-item-padding-y: {{ section.settings.menu_item_padding_y }}px;
     --menu-item-gap: {{ section.settings.menu_item_gap }}px;
     --menu-hover-line-thickness: {{ section.settings.menu_hover_line_thickness }}px;
-    --menu-hover-line-offset: {{ section.settings.menu_hover_line_offset }}px;
     --menu-hover-color: {{ section.settings.menu_hover_color }};
   }
 
@@ -452,7 +451,7 @@
     gap: var(--menu-item-gap);
   }
 
-  /* Menu hover effect - underline */
+  /* Menu hover effect - TheJacketMaker style */
   {% if section.settings.menu_hover_style == 'underline' %}
     #shopify-section-{{ section.id }} .header-menu .menu-list__link {
       position: relative;
@@ -461,14 +460,20 @@
     #shopify-section-{{ section.id }} .header-menu .menu-list__link::after {
       content: '';
       position: absolute;
-      left: var(--menu-item-padding-x);
-      right: var(--menu-item-padding-x);
-      bottom: calc(var(--menu-item-padding-y) - var(--menu-hover-line-offset));
+      bottom: 0;
+      left: 0;
+      right: 0;
       height: var(--menu-hover-line-thickness);
       background-color: var(--menu-hover-color);
       transform: scaleX(0);
-      transform-origin: center;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      {% if section.settings.menu_hover_direction == 'center' %}
+        transform-origin: center;
+      {% elsif section.settings.menu_hover_direction == 'left' %}
+        transform-origin: left;
+      {% elsif section.settings.menu_hover_direction == 'right' %}
+        transform-origin: right;
+      {% endif %}
+      transition: transform {{ section.settings.menu_hover_speed }}ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     #shopify-section-{{ section.id }} .header-menu .menu-list__link:hover::after {
@@ -491,14 +496,20 @@
     #shopify-section-{{ section.id }} .header-menu .menu-list__link::before {
       content: '';
       position: absolute;
-      left: var(--menu-item-padding-x);
-      right: var(--menu-item-padding-x);
-      top: calc(var(--menu-item-padding-y) - var(--menu-hover-line-offset));
+      top: 0;
+      left: 0;
+      right: 0;
       height: var(--menu-hover-line-thickness);
       background-color: var(--menu-hover-color);
       transform: scaleX(0);
-      transform-origin: center;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      {% if section.settings.menu_hover_direction == 'center' %}
+        transform-origin: center;
+      {% elsif section.settings.menu_hover_direction == 'left' %}
+        transform-origin: left;
+      {% elsif section.settings.menu_hover_direction == 'right' %}
+        transform-origin: right;
+      {% endif %}
+      transition: transform {{ section.settings.menu_hover_speed }}ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     #shopify-section-{{ section.id }} .header-menu .menu-list__link:hover::before {
@@ -516,7 +527,7 @@
   {% if section.settings.menu_hover_style == 'highlight' %}
     #shopify-section-{{ section.id }} .header-menu .menu-list__link {
       border-radius: 4px;
-      transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background-color {{ section.settings.menu_hover_speed }}ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     #shopify-section-{{ section.id }} .header-menu .menu-list__link:hover {
@@ -1769,11 +1780,11 @@
         },
         {
           "value": "underline",
-          "label": "Underline"
+          "label": "Underline (bottom line)"
         },
         {
           "value": "overline",
-          "label": "Overline"
+          "label": "Overline (top line)"
         },
         {
           "value": "highlight",
@@ -1781,6 +1792,26 @@
         }
       ],
       "default": "underline"
+    },
+    {
+      "type": "select",
+      "id": "menu_hover_direction",
+      "label": "Line animation direction",
+      "options": [
+        {
+          "value": "center",
+          "label": "Expand from center"
+        },
+        {
+          "value": "left",
+          "label": "Left to right"
+        },
+        {
+          "value": "right",
+          "label": "Right to left"
+        }
+      ],
+      "default": "center"
     },
     {
       "type": "range",
@@ -1793,20 +1824,20 @@
       "default": 2
     },
     {
-      "type": "range",
-      "id": "menu_hover_line_offset",
-      "label": "Line offset from text",
-      "min": 0,
-      "max": 8,
-      "step": 1,
-      "unit": "px",
-      "default": 4
-    },
-    {
       "type": "color",
       "id": "menu_hover_color",
       "label": "Hover line color",
       "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "menu_hover_speed",
+      "label": "Animation speed",
+      "min": 100,
+      "max": 500,
+      "step": 50,
+      "unit": "ms",
+      "default": 300
     },
     {
       "type": "checkbox",
