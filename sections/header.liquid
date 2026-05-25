@@ -584,7 +584,7 @@
   /* The .mega-menu__list is the actual grid container */
   #shopify-section-{{ section.id }} .mega-menu__list {
     display: grid !important;
-    grid-template-columns: repeat({{ section.settings.mega_columns | default: 5 }}, 1fr) !important;
+    grid-template-columns: repeat(5, 1fr) !important;
     gap: var(--mega-column-gap, 30px) !important;
     max-width: 1400px !important;
     margin: 0 auto !important;
