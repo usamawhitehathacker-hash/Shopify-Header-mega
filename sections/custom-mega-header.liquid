@@ -1,7 +1,31 @@
 <div class="cmh-header" role="banner" aria-label="Site header">
   <div class="cmh-header__container">
     <div class="cmh-header__row">
-      <!-- Logo, Menu, Actions will be added in next steps -->
+      {%- comment -%} Logo {%- endcomment -%}
+      <div class="cmh-header__logo cmh-header__logo--{{ section.settings.cmh_logo_position }}">
+        <a href="{{ section.settings.cmh_logo_link | default: routes.root_url }}" class="cmh-header__logo-link" aria-label="{{ shop.name }}">
+          {%- if section.settings.cmh_logo_image != blank -%}
+            {{ section.settings.cmh_logo_image | image_url: width: 600 | image_tag:
+              class: 'cmh-header__logo-img',
+              loading: 'eager',
+              widths: '100, 150, 200, 250, 300, 400, 500, 600',
+              sizes: '(max-width: 749px) var(--cmh-logo-width-mobile), var(--cmh-logo-width-desktop)'
+            }}
+          {%- else -%}
+            <span class="cmh-header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+
+      {%- comment -%} Menu placeholder {%- endcomment -%}
+      <div class="cmh-header__menu">
+        <!-- Menu will be added in Step 5 -->
+      </div>
+
+      {%- comment -%} Actions placeholder {%- endcomment -%}
+      <div class="cmh-header__actions">
+        <!-- Actions icons already handled by Horizon theme -->
+      </div>
     </div>
   </div>
 </div>
@@ -11,6 +35,8 @@
     --cmh-padding-top: {{ section.settings.cmh_padding_top }}px;
     --cmh-padding-bottom: {{ section.settings.cmh_padding_bottom }}px;
     --cmh-separator-color: {{ section.settings.cmh_separator_color }};
+    --cmh-logo-width-desktop: {{ section.settings.cmh_logo_width_desktop }}px;
+    --cmh-logo-width-mobile: {{ section.settings.cmh_logo_width_mobile }}px;
   }
 
   #shopify-section-{{ section.id }} .cmh-header {
@@ -44,12 +70,63 @@
   #shopify-section-{{ section.id }} .cmh-header__row {
     display: flex;
     align-items: center;
+    position: relative;
+    justify-content: space-between;
     {% case section.settings.cmh_section_height %}
       {% when 'compact' %}
         min-height: 60px;
       {% when 'standard' %}
         min-height: 80px;
     {% endcase %}
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__logo {
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__logo--left {
+    order: 1;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__logo--center {
+    order: 2;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__logo--right {
+    order: 3;
+    margin-left: auto;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__menu {
+    order: 2;
+    flex-grow: 1;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__actions {
+    order: 3;
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__logo-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__logo-img {
+    width: var(--cmh-logo-width-desktop);
+    height: auto;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header__logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   @media screen and (max-width: 749px) {
@@ -65,6 +142,14 @@
         {% when 'standard' %}
           min-height: 60px;
       {% endcase %}
+    }
+
+    #shopify-section-{{ section.id }} .cmh-header__logo-img {
+      width: var(--cmh-logo-width-mobile);
+    }
+
+    #shopify-section-{{ section.id }} .cmh-header__logo-text {
+      font-size: 1.2rem;
     }
   }
 
@@ -144,6 +229,51 @@
       "id": "cmh_separator_color",
       "label": "Separator color",
       "default": "#E5E5E5"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "cmh_logo_image",
+      "label": "Logo image"
+    },
+    {
+      "type": "select",
+      "id": "cmh_logo_position",
+      "label": "Logo position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "cmh_logo_width_desktop",
+      "label": "Logo width (desktop)",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "cmh_logo_width_mobile",
+      "label": "Logo width (mobile)",
+      "min": 30,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "url",
+      "id": "cmh_logo_link",
+      "label": "Logo link"
     }
   ],
   "blocks": [],
