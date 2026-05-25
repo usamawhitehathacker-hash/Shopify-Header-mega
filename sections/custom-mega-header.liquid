@@ -1,4 +1,15 @@
-<div class="cmh-header" role="banner" aria-label="Site header" data-cmh-sticky="{{ section.settings.cmh_sticky_type }}" data-cmh-sticky-state="idle">
+{%- liquid
+  assign cmh_transparent = false
+  if section.settings.cmh_transparent_home and template.name == 'index'
+    assign cmh_transparent = true
+  elsif section.settings.cmh_transparent_collection and template.name == 'collection'
+    assign cmh_transparent = true
+  elsif section.settings.cmh_transparent_product and template.name == 'product'
+    assign cmh_transparent = true
+  endif
+-%}
+
+<div class="cmh-header" role="banner" aria-label="Site header" data-cmh-sticky="{{ section.settings.cmh_sticky_type }}" data-cmh-sticky-state="idle" data-cmh-transparent="{{ cmh_transparent }}">
   <div class="cmh-header__container">
     <div class="cmh-header__row" data-cmh-mobile-layout="{{ section.settings.cmh_mobile_layout }}">
       {%- comment -%} Mobile menu toggle {%- endcomment -%}
@@ -395,6 +406,53 @@
   #shopify-section-{{ section.id }} .cmh-header[data-cmh-sticky="reduce_logo"][data-cmh-sticky-state="scrolled"] {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   }
+
+  /* Transparent header styles */
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: transparent;
+    border-bottom-color: transparent;
+    box-shadow: none;
+    color: {{ section.settings.cmh_transparent_text_color }};
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"] .cmh-header__menu-link {
+    color: {{ section.settings.cmh_transparent_text_color }};
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"] .cmh-header__logo-text {
+    color: {{ section.settings.cmh_transparent_text_color }};
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"] .cmh-header__hamburger {
+    color: {{ section.settings.cmh_transparent_text_color }};
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="active"],
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="scrolled"] {
+    background-color: #ffffff;
+    color: inherit;
+    border-bottom-color: var(--cmh-separator-color);
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="active"] .cmh-header__menu-link,
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="scrolled"] .cmh-header__menu-link {
+    color: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="active"] .cmh-header__logo-text,
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="scrolled"] .cmh-header__logo-text {
+    color: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="active"] .cmh-header__hamburger,
+  #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="scrolled"] .cmh-header__hamburger {
+    color: inherit;
+  }
 </style>
 
 <script>
@@ -651,6 +709,34 @@
         { "value": "below", "label": "Below header" }
       ],
       "default": "inline"
+    },
+    {
+      "type": "header",
+      "content": "Transparent header"
+    },
+    {
+      "type": "checkbox",
+      "id": "cmh_transparent_home",
+      "label": "Enable on homepage",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "cmh_transparent_collection",
+      "label": "Enable on collection pages",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "cmh_transparent_product",
+      "label": "Enable on product pages",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "cmh_transparent_text_color",
+      "label": "Text color (transparent mode)",
+      "default": "#FFFFFF"
     }
   ],
   "blocks": [],
