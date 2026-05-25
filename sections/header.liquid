@@ -559,143 +559,18 @@
   {% endif %}
 
   /* ================================
-   * Mega Menu Dropdown - TheJacketMaker Style
-   * ================================ */
-  #shopify-section-{{ section.id }} .mega-menu__dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    {% if section.settings.mega_width == 'full' %}
-      right: 0;
-    {% else %}
-      right: 0;
-      max-width: 1200px;
-      margin: 0 auto;
-    {% endif %}
-    background-color: var(--mega-bg-color);
-    z-index: 100;
-    {% if section.settings.mega_show_border %}
-      border-top: 1px solid var(--mega-border-color);
-    {% endif %}
-    {% if section.settings.mega_show_shadow %}
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    {% endif %}
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    {% if section.settings.mega_animation == 'fade' %}
-      transition: opacity var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1),
-                  visibility var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
-    {% elsif section.settings.mega_animation == 'slide' %}
-      transform: translateY(-8px);
-      transition: opacity var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1),
-                  visibility var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1),
-                  transform var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
-    {% else %}
-      transition: none;
-    {% endif %}
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__dropdown[data-mega-open="true"] {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    {% if section.settings.mega_animation == 'slide' %}
-      transform: translateY(0);
-    {% endif %}
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__container {
-    {% if section.settings.mega_width == 'container' %}
-      max-width: 1200px;
-      margin: 0 auto;
-    {% endif %}
-    padding: var(--mega-padding-top) 40px var(--mega-padding-bottom);
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__grid {
-    display: grid;
-    grid-template-columns: repeat(var(--mega-columns), 1fr);
-    gap: var(--mega-column-gap);
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__column {
-    min-width: 0;
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__heading {
-    font-size: var(--mega-heading-size);
-    font-weight: var(--mega-heading-weight);
-    color: var(--mega-heading-color);
-    margin: 0 0 var(--mega-heading-margin) 0;
-    padding: 0;
-    line-height: 1.3;
-    white-space: nowrap;
-    {% if section.settings.mega_heading_transform != 'none' %}
-      text-transform: {{ section.settings.mega_heading_transform }};
-    {% endif %}
-    {% if section.settings.mega_heading_font != 'inherit' %}
-      font-family: var(--font-{{ section.settings.mega_heading_font }}--family);
-    {% endif %}
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__heading a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__heading a:hover {
-    color: var(--mega-link-hover-color);
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--mega-row-gap);
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__links a {
-    font-size: var(--mega-link-size);
-    font-weight: var(--mega-link-weight);
-    color: var(--mega-link-color);
-    text-decoration: none;
-    line-height: 1.4;
-    white-space: nowrap;
-    transition: color 0.2s ease;
-    display: inline-block;
-  }
-
-  #shopify-section-{{ section.id }} .mega-menu__links a:hover {
-    color: var(--mega-link-hover-color);
-  }
-
-  /* Hide mega menu on mobile */
-  @media screen and (max-width: 749px) {
-    #shopify-section-{{ section.id }} .mega-menu__dropdown {
-      display: none;
-    }
-  }
-
-  /* ================================
-   * Override Horizon's built-in submenu to mega menu style
+   * Mega Menu - TheJacketMaker Style
+   * Targets Horizon's actual mega menu classes
    * ================================ */
 
-  /* Full-width dropdown positioning */
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu {
+  /* Full-width submenu dropdown */
+  #shopify-section-{{ section.id }} .menu-list__submenu {
     {% if section.settings.mega_width == 'full' %}
-      position: fixed !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-    {% else %}
-      position: absolute !important;
+      width: 100vw !important;
       left: 50% !important;
-      transform: translateX(-50%) !important;
-      width: 100% !important;
-      max-width: 1200px !important;
+      right: 50% !important;
+      margin-left: -50vw !important;
+      margin-right: -50vw !important;
     {% endif %}
     background-color: var(--mega-bg-color) !important;
     {% if section.settings.mega_show_border %}
@@ -704,69 +579,42 @@
     {% if section.settings.mega_show_shadow %}
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
     {% endif %}
-    padding: 0 !important;
-    border-radius: 0 !important;
   }
 
-  /* Inner content centering */
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu > * {
-    max-width: 1400px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding: var(--mega-padding-top) 60px var(--mega-padding-bottom) !important;
-  }
-
-  /* Grid layout for ALL possible list structures in Horizon */
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ul,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ol,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu nav,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu [class*="list"],
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu [class*="grid"],
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu [class*="menu"] {
+  /* Mega menu grid - targets Horizon's .mega-menu__list */
+  #shopify-section-{{ section.id }} .mega-menu__list {
     display: grid !important;
-    grid-template-columns: repeat(var(--mega-columns), 1fr) !important;
+    grid-template-columns: repeat(var(--mega-columns, var(--menu-columns-desktop, {{ section.settings.mega_columns }})), 1fr) !important;
     gap: var(--mega-column-gap) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: var(--mega-padding-top) 60px var(--mega-padding-bottom) !important;
     width: 100% !important;
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
   }
 
-  /* Columns should fill their grid cell */
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ul > li,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ol > li,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu [class*="list"] > * {
+  /* Each column in the mega menu */
+  #shopify-section-{{ section.id }} .mega-menu__column {
     min-width: 0 !important;
-    width: 100% !important;
   }
 
-  /* Nested lists inside columns should be vertical NOT grid */
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ul ul,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ol ol,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li ul,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li ol {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: none !important;
-    gap: var(--mega-row-gap) !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: auto !important;
+  /* Column span classes */
+  #shopify-section-{{ section.id }} .mega-menu__column--span-2 {
+    grid-column: span 2 !important;
   }
 
-  /* First level items = column headings */
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu > * > * > li > a,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu > * > * > li > button,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu > * > li > a,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu > * > li > button {
+  #shopify-section-{{ section.id }} .mega-menu__column--span-3 {
+    grid-column: span 3 !important;
+  }
+
+  /* Parent links = column headings (TheJacketMaker style) */
+  #shopify-section-{{ section.id }} .mega-menu__link--parent {
     font-size: var(--mega-heading-size) !important;
     font-weight: var(--mega-heading-weight) !important;
     color: var(--mega-heading-color) !important;
     margin-bottom: var(--mega-heading-margin) !important;
-    padding: 0 !important;
+    display: block !important;
     line-height: 1.3 !important;
     white-space: nowrap !important;
-    display: block !important;
     text-decoration: none !important;
     {% if section.settings.mega_heading_transform != 'none' %}
       text-transform: {{ section.settings.mega_heading_transform }} !important;
@@ -776,72 +624,100 @@
     {% endif %}
   }
 
-  /* Nested links (grandchild level) */
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li li a,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li li button {
+  /* Child links (grandchild level) */
+  #shopify-section-{{ section.id }} .mega-menu__column .mega-menu__link:not(.mega-menu__link--parent) {
     font-size: var(--mega-link-size) !important;
     font-weight: var(--mega-link-weight) !important;
     color: var(--mega-link-color) !important;
     text-decoration: none !important;
-    line-height: 1.4 !important;
+    line-height: 1.5 !important;
     white-space: nowrap !important;
-    padding: 0 !important;
     display: block !important;
+    padding: 0 !important;
     transition: color 0.2s ease !important;
   }
 
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li li a:hover,
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li li button:hover {
+  #shopify-section-{{ section.id }} .mega-menu__column .mega-menu__link:not(.mega-menu__link--parent):hover {
     color: var(--mega-link-hover-color) !important;
   }
 
-  /* Remove default margins/paddings from list items */
-  #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li {
+  /* Nested lists inside columns - vertical flow with gap */
+  #shopify-section-{{ section.id }} .mega-menu__column ul {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--mega-row-gap) !important;
+    list-style: none !important;
     margin: 0 !important;
     padding: 0 !important;
-    list-style: none !important;
   }
 
-  /* Hide mega menu overrides on mobile */
+  /* Reset list item spacing */
+  #shopify-section-{{ section.id }} .mega-menu__column li {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Featured content area */
+  #shopify-section-{{ section.id }} .mega-menu__content {
+    padding: var(--mega-padding-top) 0 var(--mega-padding-bottom) !important;
+  }
+
+  /* Animation */
+  {% if section.settings.mega_animation == 'fade' %}
+    #shopify-section-{{ section.id }} .menu-list__submenu {
+      transition: opacity var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1),
+                  visibility var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+  {% elsif section.settings.mega_animation == 'slide' %}
+    #shopify-section-{{ section.id }} .menu-list__submenu {
+      transition: opacity var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1),
+                  visibility var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1),
+                  transform var(--mega-animation-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+  {% endif %}
+
+  /* Mobile: revert all mega menu overrides */
   @media screen and (max-width: 749px) {
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu {
-      position: relative !important;
+    #shopify-section-{{ section.id }} .menu-list__submenu {
       width: auto !important;
       left: auto !important;
       right: auto !important;
-      transform: none !important;
-      max-width: none !important;
-      padding: 0 !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
       box-shadow: none !important;
       border-top: none !important;
       background-color: transparent !important;
     }
 
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu > * {
-      max-width: none !important;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ul,
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ol,
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu nav,
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu [class*="list"],
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu [class*="grid"],
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu [class*="menu"] {
+    #shopify-section-{{ section.id }} .mega-menu__list {
       display: block !important;
       grid-template-columns: none !important;
-      width: auto !important;
+      max-width: none !important;
+      padding: 0 !important;
     }
 
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ul > li,
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu ol > li {
-      width: auto !important;
+    #shopify-section-{{ section.id }} .mega-menu__column {
+      grid-column: auto !important;
     }
 
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li li a,
-    #shopify-section-{{ section.id }} .header-menu .menu-list__submenu li li button {
-      padding: 8px 16px !important;
+    #shopify-section-{{ section.id }} .mega-menu__link--parent {
+      font-size: inherit !important;
+      font-weight: inherit !important;
+      color: inherit !important;
+      text-transform: none !important;
+      margin-bottom: 0 !important;
+    }
+
+    #shopify-section-{{ section.id }} .mega-menu__column .mega-menu__link:not(.mega-menu__link--parent) {
+      font-size: inherit !important;
+      font-weight: inherit !important;
+      color: inherit !important;
+      white-space: normal !important;
+    }
+
+    #shopify-section-{{ section.id }} .mega-menu__column ul {
+      display: block !important;
+      gap: 0 !important;
     }
   }
 </style>
