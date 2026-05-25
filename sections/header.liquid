@@ -581,29 +581,52 @@
     {% endif %}
   }
 
-  /* Mega menu grid - targets Horizon's .mega-menu__list */
+  /* The .mega-menu__list is the actual grid container */
   #shopify-section-{{ section.id }} .mega-menu__list {
     display: grid !important;
-    grid-template-columns: repeat(var(--mega-columns, var(--menu-columns-desktop, {{ section.settings.mega_columns }})), 1fr) !important;
+    grid-template-columns: repeat({{ section.settings.mega_columns }}, 1fr) !important;
     gap: var(--mega-column-gap) !important;
     max-width: 1400px !important;
     margin: 0 auto !important;
     padding: var(--mega-padding-top) 60px var(--mega-padding-bottom) !important;
     width: 100% !important;
+    list-style: none !important;
   }
 
-  /* Each column in the mega menu */
+  /* Each column fills its grid cell */
   #shopify-section-{{ section.id }} .mega-menu__column {
     min-width: 0 !important;
   }
 
-  /* Column span classes */
+  /* Column span classes - respect Horizon's spanning */
+  #shopify-section-{{ section.id }} .mega-menu__column--span-1 {
+    grid-column: span 1 !important;
+  }
+
   #shopify-section-{{ section.id }} .mega-menu__column--span-2 {
     grid-column: span 2 !important;
   }
 
   #shopify-section-{{ section.id }} .mega-menu__column--span-3 {
     grid-column: span 3 !important;
+  }
+
+  /* CRITICAL FIX: Override the inline column-count style that causes vertical text */
+  #shopify-section-{{ section.id }} .mega-menu__column ul.list-unstyled,
+  #shopify-section-{{ section.id }} .mega-menu__column ul[style*="column-count"] {
+    column-count: unset !important;
+    columns: unset !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--mega-row-gap) !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Override break-after on list items (prevents column breaking) */
+  #shopify-section-{{ section.id }} .mega-menu__column li[style*="break-after"] {
+    break-after: auto !important;
   }
 
   /* Parent links = column headings (TheJacketMaker style) */
@@ -624,7 +647,7 @@
     {% endif %}
   }
 
-  /* Child links (grandchild level) */
+  /* Child links */
   #shopify-section-{{ section.id }} .mega-menu__column .mega-menu__link:not(.mega-menu__link--parent) {
     font-size: var(--mega-link-size) !important;
     font-weight: var(--mega-link-weight) !important;
@@ -641,20 +664,12 @@
     color: var(--mega-link-hover-color) !important;
   }
 
-  /* Nested lists inside columns - vertical flow with gap */
-  #shopify-section-{{ section.id }} .mega-menu__column ul {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: var(--mega-row-gap) !important;
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
   /* Reset list item spacing */
   #shopify-section-{{ section.id }} .mega-menu__column li {
     margin: 0 !important;
     padding: 0 !important;
+    list-style: none !important;
+    break-inside: avoid !important;
   }
 
   /* Featured content area */
@@ -700,12 +715,21 @@
       grid-column: auto !important;
     }
 
+    #shopify-section-{{ section.id }} .mega-menu__column ul.list-unstyled,
+    #shopify-section-{{ section.id }} .mega-menu__column ul[style*="column-count"] {
+      display: block !important;
+      column-count: unset !important;
+      columns: unset !important;
+      gap: 0 !important;
+    }
+
     #shopify-section-{{ section.id }} .mega-menu__link--parent {
       font-size: inherit !important;
       font-weight: inherit !important;
       color: inherit !important;
       text-transform: none !important;
       margin-bottom: 0 !important;
+      white-space: normal !important;
     }
 
     #shopify-section-{{ section.id }} .mega-menu__column .mega-menu__link:not(.mega-menu__link--parent) {
@@ -713,11 +737,6 @@
       font-weight: inherit !important;
       color: inherit !important;
       white-space: normal !important;
-    }
-
-    #shopify-section-{{ section.id }} .mega-menu__column ul {
-      display: block !important;
-      gap: 0 !important;
     }
   }
 </style>
