@@ -101,10 +101,16 @@
     --cmh-separator-color: {{ section.settings.cmh_separator_color }};
     --cmh-logo-width-desktop: {{ section.settings.cmh_logo_width_desktop }}px;
     --cmh-logo-width-mobile: {{ section.settings.cmh_logo_width_mobile }}px;
+    --cmh-bg-color: {{ section.settings.cmh_bg_color }};
+    --cmh-text-color: {{ section.settings.cmh_text_color }};
+    --cmh-menu-text-color: {{ section.settings.cmh_menu_text_color }};
+    --cmh-menu-hover-color: {{ section.settings.cmh_menu_hover_color }};
+    --cmh-menu-active-color: {{ section.settings.cmh_menu_active_color }};
   }
 
   #shopify-section-{{ section.id }} .cmh-header {
-    background-color: #ffffff;
+    background-color: var(--cmh-bg-color);
+    color: var(--cmh-text-color);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     {% if section.settings.cmh_enable_shadow %}
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -206,7 +212,7 @@
     gap: 4px;
     padding: 8px 12px;
     text-decoration: none;
-    color: inherit;
+    color: var(--cmh-menu-text-color);
     font-size: 0.9375rem;
     font-weight: 500;
     line-height: 1.4;
@@ -216,11 +222,13 @@
   }
 
   #shopify-section-{{ section.id }} .cmh-header__menu-link:hover {
-    opacity: 0.7;
+    color: var(--cmh-menu-hover-color);
+    opacity: 1;
   }
 
   #shopify-section-{{ section.id }} .cmh-header__menu-link[aria-current="page"] {
     font-weight: 600;
+    color: var(--cmh-menu-active-color);
   }
 
   #shopify-section-{{ section.id }} .cmh-header__menu-caret {
@@ -434,7 +442,7 @@
 
   #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="active"],
   #shopify-section-{{ section.id }} .cmh-header[data-cmh-transparent="true"][data-cmh-sticky-state="scrolled"] {
-    background-color: #ffffff;
+    background-color: var(--cmh-bg-color);
     color: inherit;
     border-bottom-color: var(--cmh-separator-color);
   }
@@ -737,6 +745,40 @@
       "id": "cmh_transparent_text_color",
       "label": "Text color (transparent mode)",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "cmh_bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cmh_text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "cmh_menu_text_color",
+      "label": "Menu link color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "cmh_menu_hover_color",
+      "label": "Menu link hover color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "cmh_menu_active_color",
+      "label": "Menu active link color",
+      "default": "#000000"
     }
   ],
   "blocks": [],
