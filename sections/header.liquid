@@ -589,6 +589,7 @@
     font-weight: var(--mega-heading-weight) !important;
     color: var(--mega-heading-color) !important;
     text-transform: {{ section.settings.mega_heading_transform | default: 'uppercase' }} !important;
+    white-space: nowrap !important;
   }
 
   /* Typography overrides for child links */
@@ -596,6 +597,7 @@
     font-size: var(--mega-link-size) !important;
     font-weight: var(--mega-link-weight) !important;
     color: var(--mega-link-color) !important;
+    white-space: nowrap !important;
   }
 
   #shopify-section-{{ section.id }} .mega-menu__link:not(.mega-menu__link--parent):hover {
