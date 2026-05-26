@@ -638,23 +638,50 @@
     columns: unset !important;
   }
 
-  /* Override any inline column-count */
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner ul[style*="column-count"],
-  [id^="submenu-"] ul[style*="column-count"] {
-    column-count: unset !important;
-    columns: unset !important;
-  }
-
-  /* Override break-after on list items */
-  #shopify-section-{{ section.id }} .menu-list__submenu-inner li[style*="break-after"] {
-    break-after: auto !important;
-  }
-
   /* Reset list items */
   #shopify-section-{{ section.id }} .menu-list__submenu-inner li {
     margin: 0 !important;
     padding: 0 !important;
     list-style: none !important;
+    break-inside: avoid !important;
+  }
+
+  /* Force equal columns - override Horizon's dynamic span classes */
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner .mega-menu__column,
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner .mega-menu__column[class*="--span-"],
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner li.mega-menu__column,
+  [id^="submenu-"] .mega-menu__column,
+  [id^="submenu-"] .mega-menu__column[class*="--span-"],
+  [id^="submenu-"] li.mega-menu__column {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Override ALL inline column-count styles on nested lists */
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner .mega-menu__column ul,
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner .mega-menu__column ul[style],
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner ul[style*="column-count"],
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner ul[style*="column"],
+  [id^="submenu-"] .mega-menu__column ul,
+  [id^="submenu-"] .mega-menu__column ul[style],
+  [id^="submenu-"] ul[style*="column-count"],
+  [id^="submenu-"] ul[style*="column"] {
+    column-count: unset !important;
+    columns: unset !important;
+    column-gap: unset !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--mega-row-gap, 10px) !important;
+  }
+
+  /* Override ALL break-after */
+  #shopify-section-{{ section.id }} .menu-list__submenu-inner .mega-menu__column li,
+  [id^="submenu-"] .mega-menu__column li {
+    break-after: auto !important;
+    break-before: auto !important;
     break-inside: avoid !important;
   }
 
